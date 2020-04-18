@@ -1,3 +1,9 @@
+Changes in fork:
+
+- Added realm & resource to authorization url
+
+___
+
 [![codecov](https://codecov.io/gh/teranetsrl/oauth2_client/branch/master/graph/badge.svg)](https://codecov.io/gh/teranetsrl/oauth2_client)
 
 # oauth2_client

@@ -87,17 +87,22 @@ class OAuth2Client {
   }
 
   /// Requests an Access Token to the OAuth2 endpoint using the Client Credentials flow.
-  Future<AccessTokenResponse> getTokenWithClientCredentialsFlow(
-      {@required String clientId,
-      @required String clientSecret,
-      List<String> scopes,
-      httpClient}) async {
+  Future<AccessTokenResponse> getTokenWithClientCredentialsFlow({
+    @required String clientId,
+    @required String clientSecret,
+    List<String> scopes,
+    httpClient,
+    realm,
+    resource
+  }) async {
     if (httpClient == null) httpClient = http.Client();
 
     Map<String, String> params = {
       'grant_type': 'client_credentials',
       'client_id': clientId,
-      'client_secret': clientSecret
+      'client_secret': clientSecret,
+      'realm': realm,
+      'resource': resource
     };
 
     if (scopes != null) params['scope'] = scopes.join('+');
