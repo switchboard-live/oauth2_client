@@ -33,16 +33,23 @@ class OAuth2Client {
   String tokenUrl;
   String refreshUrl;
   String authorizeUrl;
+
+  String realm;
+  String resource;
+
   Map<String, String> _accessTokenRequestHeaders;
 
   WebAuth webAuthClient;
 
-  OAuth2Client(
-      {@required this.authorizeUrl,
-      @required this.tokenUrl,
-      this.refreshUrl,
-      @required this.redirectUri,
-      @required this.customUriScheme}) {
+  OAuth2Client({
+    @required this.authorizeUrl,
+    @required this.tokenUrl,
+    this.refreshUrl,
+    @required this.redirectUri,
+    @required this.customUriScheme,
+    @required this.realm,
+    @required this.resource,
+  }) {
     webAuthClient = WebAuth();
   }
 
@@ -87,14 +94,11 @@ class OAuth2Client {
   }
 
   /// Requests an Access Token to the OAuth2 endpoint using the Client Credentials flow.
-  Future<AccessTokenResponse> getTokenWithClientCredentialsFlow({
-    @required String clientId,
-    @required String clientSecret,
-    List<String> scopes,
-    httpClient,
-    realm,
-    resource
-  }) async {
+  Future<AccessTokenResponse> getTokenWithClientCredentialsFlow(
+      {@required String clientId,
+      @required String clientSecret,
+      List<String> scopes,
+      httpClient}) async {
     if (httpClient == null) httpClient = http.Client();
 
     Map<String, String> params = {
@@ -102,7 +106,7 @@ class OAuth2Client {
       'client_id': clientId,
       'client_secret': clientSecret,
       'realm': realm,
-      'resource': resource
+      'resource': resource,
     };
 
     if (scopes != null) params['scope'] = scopes.join('+');
@@ -179,7 +183,9 @@ class OAuth2Client {
       String codeChallenge}) {
     final Map<String, String> params = {
       'response_type': 'code',
-      'client_id': clientId
+      'client_id': clientId,
+      'realm': realm,
+      'resource': resource,
     };
 
     if (redirectUri != null && redirectUri.isNotEmpty)
