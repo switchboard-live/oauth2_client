@@ -97,6 +97,7 @@ class OAuth2Helper {
     AccessTokenResponse tknResp;
 
     tknResp = await client.refreshToken(refreshToken);
+    tknResp.refreshToken = refreshToken;
 
     if (tknResp != null && tknResp.isValid()) {
       tokenStorage.addToken(tknResp);
